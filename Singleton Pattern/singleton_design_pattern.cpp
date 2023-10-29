@@ -3,7 +3,7 @@
 #include<mutex>
 using namespace std;
 int Logger:: ctr =0;
-Logger Logger::*loggerInstance=nullptr;
+Logger* Logger::loggerInstance =nullptr;
 
 
 Logger::Logger(){
@@ -16,9 +16,10 @@ void Logger::Log(string msg){
 
 Logger* Logger::getLogger(){
     if(loggerInstance==nullptr){
-        mtx.lock();
+        Logger::mtx.lock();
         if(loggerInstance==nullptr)
             loggerInstance = new Logger();
-        mtx.unlock();
+        Logger::mtx.unlock();
     }
+    return loggerInstance;
 }
